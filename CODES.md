@@ -16,7 +16,7 @@ sudo apt install -y build-essential libncurses-dev bison flex libssl-dev libelf-
 
 Serve para baixar arquivos diretamente da internet:
 ```
-wget [<link>](https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.1.60.tar.xz)
+wget https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.1.60.tar.xz
 ```
 
 Utilizado para a descompactação de arquivos .tar.gz, as flags "-x" significa "extraction", "-v" significa "verbose" (lista o nome dos arquivos quando são processados), e "-f" específica o nome do arquivo que será lido:
