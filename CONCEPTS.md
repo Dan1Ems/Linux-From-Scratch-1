@@ -10,28 +10,9 @@
 
 **Bootloader**: Bootloader é um software que permite a inicialização do Sistema Operacional de todos os dispositivos. Sempre que o dispositivo é ligado, ele acionará o bootloader para carregar o OS. Além disso, o sftware também funciona com garantia, caso ocorra alguma falha crítica com esse sistema.
 
-### Explicação do código
-Atualiza a lista de pacotes, ele não instala nem atualiza nada, mas busca as informações mais recentes. Rodamos ele antes de qualquer atualização do sistema:
-```
-sudo apt update
-```
+### Opções de configuração
+y - (Yes/Built-in): O código será compilado diretamente para dentro do arquivo executável final do kernel (`vmlinuz`). O recurso estará disponível no exato milissegundo em que o kernel for carregado na RAM pelo bootloader.
 
-Por outro lado, esse comando atualiza todos os pacotes para a versão mais recente disponiveis na lista que você acabou de atualizar:
-```
-sudo apt upgrade
-```
+m - (Module): O código será compilado com um arquivo separado, com extensão `.ko` (Kernel Object). Esses arquivos ficarão armazenados no seu disco rígido. O kernel só carregará esse módulo na RAM se detectar o hardware correspondente.
 
-Esse comando serve para instalar os pacotes e suas dependencias, a flag "-y" serve para confirmar automaticamente a instalação dos pacotes:
-```
-sudo apt install -y build-essential libncurses-dev bison flex libssl-dev libelf-dev bc cpio wget xorriso grub-pc-bin grub-efi-amd64-bin grub-common mtools squashfs-tools qemu-system-x86 tar xz-utils
-```
-
-Serve para baixar arquivos diretamente da internet:
-```
-wget [<link>](https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.1.60.tar.xz)
-```
-
-Utilizado para a descompactação de arquivos .tar.gz, as flags "-x" significa "extraction", "-v" significa "verbose" (lista o nome dos arquivos quando são processados), e "-f" específica o nome do arquivo que será lido:
-```
-sudo tar -xvf linux-6.1.60.tar.xz
-```
+n - (No): O código é ignorado pelo compilador.
