@@ -39,8 +39,11 @@ Entra no arquivo de configuração .config:
 sudo nvim .config # Ou algum outro editor de texto
 ```
 
-No arquivo .config procure por (procure pelos nomes):
+No arquivo .config procure:
 ```
+# Para procurar, utilize o /<nome_do_arquivo> e verifique se ele está igualado a y (Exemplo: /CONFIG_BINFMT_ELF)
+# Caso não esteja, modifique seguindo o padrão do arquivo e iguale ele a y
+
 CONFIG_BINFMT_ELF=y
 CONFIG_EXT4_FS=y
 CONFIG_BLK_DEV=y
