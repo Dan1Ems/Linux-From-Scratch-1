@@ -22,6 +22,14 @@ Para criar uma nova distro, você precisa entender cada componente. LFS é o rot
 
 ---
 
+### Código Fonte
+
+É o código em C (e assembly) que forma o kernel. Sem o código-fonte, não há kernel. Você precisa dele para personalizar.
+
+Você baixa do [kernel.org](https://kernel.org/).
+
+---
+
 ### Diretórios
 
 #### **arch/**
