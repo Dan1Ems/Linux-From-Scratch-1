@@ -404,3 +404,274 @@ mount -t devtmpfs none /dev
 mkdir /dev/pts
 mount -t devpts none /dev/pts
 ```
+
+Crie a sua variável da pasta da distro:
+
+``` bash
+export DISTRO=/home/administrador/distro
+```
+
+Vá para a sua pasta distro:
+
+``` bash
+cd distro
+```
+
+Crie o diretório rootfs:
+
+``` bash
+mkdir rootfs
+```
+
+Crie os diretórios:
+
+``` bash
+mkdir bin sbin dev proc mnt sys etc run root home lib var temp
+```
+
+Copie o busybox pro diretório bin:
+
+``` bash
+cp ~/busybox-1.37.0/busybox bin/
+```
+
+Entre no diretório bin:
+
+``` bash
+cd bin
+```
+
+Crie um arquivo temp:
+
+``` bash
+nvim temp
+```
+
+Dentro, coloque:
+
+``` bash
+#!/bin/bash
+
+for prog in $(./busybox --list); do
+        ln -s busybox ./$prog
+done
+```
+
+Dê permissão:
+
+``` bash
+chmod +755 temp
+```
+
+Execute o script:
+
+``` bash
+./temp
+```
+
+Remova o script temporário:
+
+``` bash
+rm temp
+```
+
+Navegue para a pasta etc:
+
+``` bash
+cd ../etc
+```
+
+Crie o diretório:
+
+``` bash
+mkdir init.d
+```
+
+Navegue para o diretório var:
+
+``` bash
+cd ../var
+```
+
+Crie os diretórios:
+
+``` bash
+mkdir log run lib
+```
+
+Volte para o diretório etc:
+
+``` bash
+cd ../etc
+```
+
+Crie um arquivo chamado group:
+
+``` bash
+nvim group
+```
+
+Nele, coloque:
+
+``` bash
+root:x:0:0:root:/root:/bin/sh
+```
+
+Dê a permissão:
+
+``` bash
+chmod +755 group
+```
+
+Crie outro arquivo:
+
+``` bash
+nvim inittab
+```
+
+Nele, coloque:
+
+``` bash
+::sysinit:/etc/init.d/rcS
+
+ttyS0::respawn:/bin/sh
+tty1::respawn:/bin/sh
+
+::ctrlaltdel:/bin/reboot
+::shutdown:/bin/unmount -a -r
+```
+
+Dê a permissão:
+
+``` bash
+chmod +755 inittab
+```
+
+Entre no diretório init.d:
+
+``` bash
+cd init.d
+```
+
+Crie o arquivo rcS (run command SINGLE):
+
+``` bash
+nvim rcS
+```
+
+Dentro, coloque:
+
+``` bash
+!/bin/sh
+
+# pseudofilesystems essenciais
+mount -t proc none /proc
+mount -t sysfs none /sys
+mount -t devtmpfs none /dev
+
+# terminais para os pseudo-terminal
+mkdir /dev/pts
+mount -t devpts none /dev/pts
+
+# gerenciador de dispositivos
+echo /bin/mdev > /proc/sys/kernel/hotplug
+mdev -s
+```
+
+Dentro do etc, crie o arquivo passwd:
+
+``` bash
+touch passwd
+```
+
+Dentro, coloque:
+
+``` bash
+root:x:0:0:root:/root:/bin/sh
+bin:x:1:1:bin:/dev/null:/bin/false
+daemon:x:6:6:Daemon User:/dev/null:/bin/false
+messagebus:x:18:18:D-Bus Message Daemon User:/run/dbus:/bin/false
+nobody:x:65534:65534:Unprivileged User:/dev/null:/bin/false
+```
+
+Crie o arquivo group:
+
+``` bash
+touch group
+```
+
+Nele, coloque:
+
+``` bash
+root:x:0:
+bin:x:1:daemon
+sys:x:2:
+kmem:x:3:
+tape:x:4:
+tty:x:5:
+daemon:x:6:
+floppy:x:7:
+disk:x:8:
+lp:x:9:
+dialout:x:10:
+audio:x:11:
+video:x:12:
+utmp:x:13:
+usb:x:14:
+cdrom:x:15:
+adm:x:16:
+messagebus:x:18:
+input:x:24:
+mail:x:34:
+kvm:x:61:
+wheel:x:97:
+nogroup:x:65533:
+nobody:x:65534:
+```
+
+Crie o arquivo hostname:
+
+``` bash
+touch hostname
+```
+
+No diretório etc, digite o comando:
+
+``` bash
+echo "my-distro" > /etc/hostname
+```
+
+Para testar, crie o arquivo profile:
+
+``` bash
+touch profile
+```
+
+Nele, coloque:
+
+``` bash
+export FEATURE_SH_STANDALONE=1
+export PATH=/bin
+
+echo ""
+echo "TESTANDO DISTRO"
+echo ""
+```
+
+Volte para a pasta rootfs:
+
+``` bash
+cd ..
+```
+
+Execute o comando:
+
+``` bash
+sudo chroot /home/administrador/distro/rootfs /bin/sh -l
+```
+
+Caso compilar o kernel tenha dado errado, dentro do busybox digite:
+
+``` bash
+make CONFIG_PREFIX=<caminho_para_distro_rootfs> install
+```
