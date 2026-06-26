@@ -48,26 +48,24 @@ No `menuconfig` procure pelas opções de configuração descritas abaixo. Para 
 
 Caso alguma das opções não esteja como YES na sua configuração, altere manualmente utilizando o `menuconfig`.
 
-``` bash
-// EXEMPLO
+|Opção|Caminho no menuconfig|Porquê|
+|-----|---------------------|------|
+|Suporte a ext4|File systems > Ext4|Nosso rootfs será ext4|
+|Suporte a SquashFS|File systems > Miscellaneous > SquashFS|Para o Live CD ler o filesystem compactado|
+|OverlayFS|File systems > Overlay filesystem|Para a camada de escrita do Live CD|
+|Suporte a ISO 9660|File systems > ISO 9660|Para o GRUB ler o CD|
+|Suporte a FAT/VFAT|File systems > DOS/FAT/VFAT|Para a partição EFI|
+|Suporte a tmpfs|File systems > Pseudo filesystems > tmpfs|Para o OverlayFS na RAM|
+|Suporte a disco SATA/AHCI|Device Drivers > Serial ATA/ATAPI > AHCI|Para ler discos SATA|
+|Suporte a NVMe|Device Drivers > NVM Express block device|Para ler SSDs modernos|
+|Suporte a USB Storage|Device Drivers > USB > USB Mass Storage|Para ler pendrives|
+|Suporte a loop device|Device Drivers > Block devices > Loopback|Para montar imagens|
 
-# CONFIG_BLK_DEV_NVME is not set -> CONFIG_BLK_DEV_NVME=y
-```
-
-``` bash
-CONFIG_BINFMT_ELF=y
-CONFIG_EXT4_FS=y
-CONFIG_BLK_DEV=y
-CONFIG_SCSI=y
-CONFIG_SATA_AHCI=y
-CONFIG_BLK_DEV_NVME=y
-CONFIG_PROC_FS=y
-```
-
-Agora precisamos garantir que os módulos que precisaremos estarão carregados, desativando opções do kernel que não serão necessárias e mantem as opções de dirvers utilizados pelo sistema atual, perguntando interativamente sobre os itens opcionais. Para verificar isso vamos rodar o comandos a seguir.
+Agora precisamos garantir que os módulos que precisaremos estarão carregados. Para isso, vamos usar o `localmodconfig`, ele desativa opções do kernel que não serão necessárias e mantém as opções de drivers utilizados pelo sistema atual, perguntando interativamente sobre os itens opcionais. Para verificar isso vamos rodar o comandos a seguir.
 
 ``` bash
-sudo make localmodconfig # Aperte Yes para tudo
+sudo make localmodconfig 
+# Aperte Yes para tudo
 ```
 
 **REFAZER DAQUI**
